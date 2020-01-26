@@ -26,11 +26,14 @@ class BreakpointStore {
         bp() {
           let result = null
 
-          forOwn(this.breakpoints, (v, k) => {
-            if (v[0] <= this.screenWidth && v[1] >= this.screenWidth) {
-              result = k
+          for (let k in this.breakpoints) {
+            if (Object.hasOwnProperty(this.breakpoints, k)) {
+              const v = this.breakpoints[k]
+              if (v[0] <= this.screenWidth && v[1] >= this.screenWidth) {
+                result = k
+              }
             }
-          })
+          }
 
           return result
         },
