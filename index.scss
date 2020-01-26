@@ -1,0 +1,154 @@
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+);
+
+$grid-columns: 12;
+
+$grid-gutter: 40px;
+
+@mixin make-container {
+  box-sizing: border-box;
+  width: 100%;
+  padding-right: $grid-gutter / 2;
+  padding-left: $grid-gutter / 2;
+  margin: 0 auto;
+
+  @each $breakpoint, $max-width in $container-max-widths {
+    @include media-breakpoint-up($breakpoint) {
+      max-width: $max-width;
+    }
+  }
+}
+
+@mixin make-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -$grid-gutter / 2;
+  margin-left: -$grid-gutter / 2;
+}
+
+@mixin make-col($n) {
+  box-sizing: border-box;
+  padding-right: $grid-gutter / 2;
+  padding-left: $grid-gutter / 2;
+
+  @if $n == auto {
+    width: auto;
+  } @else {
+    width: 100%;
+    max-width: 100% / $grid-columns * $n;
+    flex: 0 0 100% / $grid-columns * $n;
+  }
+}
+
+.container {
+  @include make-container;
+}
+
+.container-fluid {
+  @include make-container;
+  max-width: 100% !important;
+}
+
+.row {
+  @include make-row;
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+
+  @each $breakpoint, $_ in $breakpoints {
+    @for $i from 1 through $grid-columns {
+      @if $breakpoint == xs {
+        &-#{$i} {
+          @include make-col($i);
+        }
+
+        &-auto {
+          @include make-col(auto);
+        }
+      } @else {
+        &-#{$breakpoint} {
+          &-#{$i} {
+            @include media-breakpoint-up($breakpoint) {
+              @include make-col($i);
+            }
+          }
+
+          &-auto {
+            @include media-breakpoint-up($breakpoint) {
+              @include make-col(auto);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.align-content-start {
+  align-content: flex-start;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items {
+  @each $type in (start, center, end) {
+    &-#{$type} {
+      align-items: $type;
+    }
+  }
+}
+
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.justify-content-around {
+  justify-content: space-around !important;
+}
+
+.text {
+  @each $direction in (left, center, right) {
+    &-#{$direction} {
+      text-align: $direction;
+    }
+  }
+}
+
+.row.no-gutters {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.row.no-gutters > * {
+  padding-left: 0;
+  padding-right: 0;
+}
