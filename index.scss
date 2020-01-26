@@ -1,3 +1,44 @@
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+@mixin media-breakpoint-up($breakpoint) {
+  @media screen and (min-width: map_get($breakpoints, $breakpoint)) {
+    @content
+  }
+}
+
+@mixin desktop() {
+  @include media-breakpoint-up(xl) {
+    @content
+  }
+}
+
+
+@mixin small-desktop() {
+  @include media-breakpoint-up(lg) {
+    @content
+  }
+}
+
+
+@mixin tablet() {
+  @include media-breakpoint-up(md) {
+    @content
+  }
+}
+
+
+@mixin mobile() {
+  @media only screen and (max-width: map_get($breakpoints, sm)) {
+    @content
+  }
+}
+
 $container-max-widths: (
   sm: 540px,
   md: 720px,
